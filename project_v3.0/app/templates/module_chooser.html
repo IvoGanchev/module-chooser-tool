@@ -1,0 +1,176 @@
+{% extends "module_chooser_base.html" %}
+
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+      <div class="container">
+        <div id="message_alert"></div>
+        <div class="row" id="module_chooser">
+          <div class="col-sm-5 padding-0" id="left-panel">
+            <div class="header">
+              <div id="left-title">Assigned Modules</div>
+            </div>
+            <div class="scrollable_table table-responsive">
+              <table class="table table-hover table-sm" id="assigned_table" onmousemove="sortAssignedTable();">
+                <thead>
+                  <tr class="d-flex">
+                    <th style="display:none;">id</th>
+                    <!-- <th scope="col" class="col-3">Code</th> -->
+                    <th id="assigned_module" scope="col" class="col-8">Module</th>
+                    <th id="assigned_year" scope="col" class="col-1">Yr</th>
+                    <th id="assigned_semester" scope="col" class="col-1">Sem.</th>
+                    <th id="assigned_credits_mod" scope="col" class="col-1">Cr.</th>
+                    <th scope="col" class="col-1">Act</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for module in all_user_modules %}
+                      <tr class="d-flex">
+                          <td style="display:none;">{{module.id}}</td>
+                          <!-- <td class="col-3">{{module.module_code}}</td> -->
+                          <td class="col-8">{{module.module_title}}</td>
+                          <td class="col-1">{{module.module_year}}</td>
+                          {% if module.module_semester == 3 %}
+                            <td class="col-1">1&2</td>
+                          {% else %}
+                            <td class="col-1">{{module.module_semester}}</td>
+                          {% endif %}
+                          <td class="col-1">{{module.module_credits}}</td>
+                          <td class="col-1">
+                            <a id="module{{module.id}}remove" href="/module_chooser/{{module.id}}"><span class="fa fa-times"></span></a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="prerequisites_title">Programme Credits</div>
+          <div class="table table-responsive " id="credits">
+            <table class="table table-bordered table-sm needed_cr">
+              <thead>
+                <tr class="d-flex">
+                  <th scope="col" class="col-2">Year</th>
+                  <th scope="col" class="col-5">Total Credits</th>
+                  <th scope="col" class="col-5">Needed Credits</th>
+                </tr>
+              </thead>
+              <tbody>
+                    <tr class="d-flex">
+                        <td class="col-2">1</td>
+                        <td class="col-5">{{credits_1y}}</td>
+                        <td class="col-5">{{needed_1y}}</td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td class="col-2">2</td>
+                        <td class="col-5">{{credits_2y}}</td>
+                        <td class="col-5">{{needed_2y}}</td>
+                    </tr>
+                    <tr class="d-flex">
+                        <td class="col-2">3</td>
+                        <td class="col-5">{{credits_3y}}</td>
+                        <td class="col-5">{{needed_3y}}</td>
+                    </tr>
+                    {% if credits_4y != 1 %}
+                      <tr class="d-flex">
+                          <td class="col-2">4</td>
+                          <td class="col-5">{{credits_4y}}</td>
+                          <td class="col-5">{{needed_4y}}</td>
+                      </tr>
+                    {% endif %}
+              </tbody>
+            </table>
+        </div>
+
+        </div>
+          <div class="col-sm-2 padding-0" id="middle-panel">
+            <div class="header">
+              <div id="mod_code">Code</div>
+            </div>
+
+            <div class="info">
+              <div id="mod_title"></div>
+              <div id="mod_lecturer"></div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div id="mod_credits"></div>
+                </div>
+                <div class="col-sm-6">
+                  <div id="class_size"></div>
+                </div>
+              </div>
+              <div id="mod_description"></div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div id="mod_url"></div>
+                </div>
+                <div class="col-sm-6">
+                  <div id="mod_assign_btn"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-xs-5 col-sm-6 col-md-5 padding-0" id="right-panel">
+            <div class="header">
+              <span class="counter pull-right"></span>
+              <form id="filter">
+              	<input type="search" id="search" onkeyup="searchTable()" placeholder="Search">
+              </form>
+            </div>
+            <div class="scrollable_table table-responsive">
+              <table class="table table-hover table-sm" id="selectable_table" onmousemove="getSelectedModule();sortTable();">
+                <thead>
+                  <tr class="d-flex">
+                    <th style="display:none;">id</th>
+                    <!-- <th scope="col" class="col-3">Code</th> -->
+                    <th id="module" scope="col" class="col-9">Module</th>
+                    <th id="year" scope="col" class="col-1">Yr</th>
+                    <th id="semester" scope="col" class="col-1">Sem.</th>
+                    <th id="credits_mod" scope="col" class="col-1">Cr.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for module in modules %}
+                      <tr class="d-flex">
+                          <td style="display:none;">{{module.id}}</td>
+                          <!-- <td class="col-3">{{module.module_code}}</td> -->
+                          <td class="col-9" id="module{{module.id}}id">{{module.module_title}}</td>
+                          <td class="col-1">{{module.module_year}}</td>
+                          {% if module.module_semester == 3 %}
+                            <td class="col-1">1&2</td>
+                          {% else %}
+                            <td class="col-1">{{module.module_semester}}</td>
+                          {% endif %}
+                          <td class="col-1">{{module.module_credits}}</td>
+                      </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+          <div class="mini_tables">
+            <div class="prerequisites_title">
+              Prerequisites
+            </div>
+            <div id="prereq_table"></div>
+          </div>
+          <div class="mini_tables">
+            <div class="prerequisites_title">
+              Future Choices
+            </div>
+            <div id="future_table"></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

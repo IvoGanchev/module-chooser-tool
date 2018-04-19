@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Home - Module Chooser</title>
+    <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!--JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+    <!--Custom CSS -->
+      <link href="../static/css/home_page.css" type="text/css" rel="stylesheet" />
+
+      {% if title %}
+          <title>{{ title }}</title>
+      {% else %}
+          <title>No title specified</title>
+      {% endif %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fa fa-bars"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/home_page">Home <span class="sr-only">(current)</span></a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a id="module_chooser_link" href="/module_chooser" class="nav-link">Module Chooser</a>
+          </li>
+          <li class="nav-item">
+            <a href="/change_password" class="nav-link">Change Password</a>
+          </li>
+          <li class="nav-item">
+            <a href="/sign_out" class="nav-link">Sign Out</a>
+          </li>
+          {% else %}
+              <li class="nav-item">
+                <a href="/sign_in" class="nav-link">Sign In</a>
+              </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <span class="target"></span>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-xs-12" id="intro">
+          <h2>Welcome to Module Chooser Tool</h2>
+          <p>Life is all about making choices.
+          The right ones are always the hardest to make and
+          taking the right path in your degree isn't always easy.
+          Module Chooser Tool is here to bring that level of uncertanity down,
+          and help students take the right modules during their degree.
+          Your future is in your hands and with this tool
+          you are able to shape your own degree path every day.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="block">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6" id="features">
+              <p>Main features of the Module Chooser Tool</p>
+                  <ul>
+                    <li>Search and filter capabilities.</li>
+                    <li>Checks if prerequisites are taken or not.</li>
+                    <li>Shows future module choices based on the chosen module.</li>
+                    <li>Calculates credits for each year of the programme</li>
+                    <li>Intelligent notification system.</li>
+                  </ul>
+          </div>
+          <div class="col-md-6 col-xs-6">
+                  <img class="img-fluid" src="../static/images/module_chooser.png" alt="Module Chooser">
+          </div>
+        </div><!-- End off row -->
+      </div>
+
+      <div class="copyright">
+      <div class="container">
+        <div class="col-offset-6 col-md-6">
+          <p>© 2018 -  All rights reserverd - Ivo O. Ganchev</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+</html>

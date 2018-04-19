@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Lecturers{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-4">
+                <h1>All Lecturers</h1><br>
+            </div>
+        </div>
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 custyle">
+              <table class="table table-striped custab">
+                <thead>
+                    <tr>
+                        <th class="inner">Degree</th>
+                        <th class="inner">Name</th>
+                        <th class="inner">E-mail</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lecturer in lecturers %}
+                        <tr>
+                            <td class="inner">
+                                {{ lecturer.lecturer_degree }}
+                            </td>
+                            <td class="inner">{{lecturer.lecturer_name}}</td>
+                            <td class="inner">{{lecturer.lecturer_email}}</td>
+                            <td>
+                              <a href="/display_lecturers/{{lecturer.id}}"><span class="fa fa-times"></span></a>
+                              <a id="edit_lecturer_link" href="/edit_lecturer_details/{{lecturer.id}}"><span class="far fa-edit"></span></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Modules{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-4">
+                <h1>All modules</h1><br>
+            </div>
+        </div>
+            <div class="row col-md-12 custyle">
+            <table class="table table-striped custab">
+              <thead>
+                  <tr>
+                      <th class="inner">Code</th>
+                      <th class="inner">Module</th>
+                      <th>Credits</th>
+                      <th>Year</th>
+                      <th>Semester</th>
+                      <th>Class Size</th>
+                      <th class="text-center">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for module in modules %}
+                      <tr>
+                          <td class="inner"><a id="module{{module.id}}code" href="/display_module_details/{{module.id}}">
+                              {{ module.module_code }}</a>
+                          </td>
+                          <td class="inner">{{module.module_title}}</td>
+                          <td>{{module.module_credits}}</td>
+                          <td>{{module.module_year}}</td>
+                          <td>{{module.module_semester}}</td>
+                          <td>{{module.class_size}}</td>
+                          <td>
+                            <a href="/display_modules/{{module.id}}"><span class="fa fa-times"></span></a>
+                            <a id="edit_module_link" href="/edit_module_details/{{module.id}}"><span class="far fa-edit"></span></a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            </div>
+        </div>
+{% endblock %}

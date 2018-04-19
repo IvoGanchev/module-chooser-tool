@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-4">
+                <h1>All Courses</h1><br>
+            </div>
+        </div>
+            <div class="row col-md-12 custyle">
+            <table class="table table-striped custab">
+              <thead>
+                  <tr>
+                      <th>Title</th>
+                      <th>Bachelor Title</th>
+                      <th>Masters Title</th>
+                      <th>1y Credits</th>
+                      <th>2y Credits</th>
+                      <th>3y Credits</th>
+                      <th>4y Credits</th>
+                      <th class="text-center">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for course in courses %}
+                      <tr>
+                          <td ><a id="course{{course.id}}title" href="/display_course_details/{{course.id}}">
+                              {{ course.course_title }}</a>
+                          </td>
+                          <td>{{course.course_degree_bach}}</td>
+                          <td>{{course.course_degree_mast}}</td>
+                          <td>{{course.course_1y_credits}}</td>
+                          <td>{{course.course_2y_credits}}</td>
+                          <td>{{course.course_3y_credits}}</td>
+                          <td>{{course.course_4y_credits}}</td>
+                          <td>
+                            <a href="/display_courses/{{course.id}}"><span class="fa fa-times"></span></a>
+                            <a id="edit_course_link" href="/edit_course_details/{{course.id}}"><span class="far fa-edit"></span></a>
+                          </td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            </div>
+        </div>
+{% endblock %}

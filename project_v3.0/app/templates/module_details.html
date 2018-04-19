@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}{{ module.module_title }}{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+      <h1><b>{{module.module_title}}<b></h1><br>
+      <div class="jumbotron">
+          <p>
+              <b>Code:</b> {{ module.module_code }}
+          </p>
+          <p>
+              <b>Credits:</b> {{ module.module_credits }}
+          </p>
+          <p>
+              <b>Year:</b> {{ module.module_year }}
+          </p>
+          <p>
+              <b>Semester:</b> {{ module.module_semester }}
+          </p>
+          <p>
+              <b>Class size:</b> {{ module.class_size }}
+          </p>
+          <p>
+              <b>Brief description:</b><br> {{ module.module_description }}
+          </p>
+        </div>
+
+        <div class="panel panel-default">
+
+          <ul class="list-group">
+              <li class="list-group-item">
+                  <div class="row toggle" class="dropdown-detail-1" data-toggle="detail-1">
+                      <div class="col-md-10">
+                          <b>Information</b>
+                      </div>
+                      <div class="col-md-2"><i class="fa fa-chevron-down float-right"></i></div>
+                  </div>
+                  <div id="detail-1">
+                      <hr></hr>
+                      <div class="container">
+                          <div class="fluid-row">
+                              <p>
+                                <b>Lecturer assigned:</b>
+                                {% if module.lecturer == None %}
+                                    --None--
+                                {% else %}
+                                    {{module.lecturer}}
+                                {% endif %}
+                              </p>
+                              <p>
+                                <b>Prerequisites assigned:</b><br>
+                                {% if module.prerequisites == "" %}
+                                    --None--
+                                {% else %}
+                                  {% for pre_module in module_prereq_list %}
+                                    {{pre_module}} <a href="/remove_prereq_from_module/{{module.id}}/{{pre_module}}"><span class="fas fa-trash-alt"></span></a><br>
+                                  {% endfor %}
+                                {% endif %}
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              {% if user.student_email == 'admin@leeds.ac.uk' %}
+              <li class="list-group-item">
+                <div class="row toggle" class="dropdown-detail-2" data-toggle="detail-2">
+                    <div class="col-md-10">
+                        <b>Edit Module</b>
+                    </div>
+                    <div class="col-md-2"><i id="module{{module.id}}edit" class="fa fa-chevron-down float-right"></i></div>
+                </div>
+                <div id="detail-2">
+                    <hr></hr>
+                    <div class="container">
+                        <div class="fluid-row pull">
+                              {% if user.student_email == 'admin@leeds.ac.uk' %}
+                            <p>
+                              <b>Select a lecturer to assign:</b>
+                              <form class="form-inline" action="/add_lecturer_to_module" method="POST">
+                                <input type="hidden" name="module" value={{module.id}}>
+                                <select id="select_lecturer_menu" name="lecturer_select" class="form-control">
+                                  <option>--None--</option>
+                                  {% for lecturer in lecturers %}
+                                    <option id="lecturer{{lecturer.id}}" value={{lecturer.id}}>Lecturer:{{lecturer.lecturer_degree}} {{lecturer.lecturer_name}} </option>
+                                  {%endfor%}
+                                </select>
+                                <button id="assign_lecturer_button" type="submit" class="btn btn-default">Assign</button>
+                              </form>
+                          </p>
+                              {%endif%}
+                                <p>
+
+                                </p>
+                                  {% if user.student_email == 'admin@leeds.ac.uk' %}
+                                <b>Add prerequisite:</b>
+                                <form class="form-inline"  action="/assign_prerequisites_to_module" method="POST">
+                                    <input type="hidden" name="module" value={{module.id}}>
+                                    <select id="select_prerequisite_menu" name="prereq" class="form-control">
+                                        <option>--None--</option>
+                                          {% for prereq in prerequisites %}
+                                              <option id="premodule{{prereq.id}}" value="{{prereq.module_title}}">Module: {{prereq.module_title}} </option>
+                                          {%endfor%}
+                                    </select>
+                                    <button id="add_prerequisitie_button" type="submit" class="btn btn-default">Add</button>
+                                </form>
+                          {%endif%}
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              {%endif%}
+            </ul>
+          </div>
+        </div>
+{% endblock %}

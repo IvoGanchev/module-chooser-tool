@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>{% block title %}{% endblock %} - Module Chooser Tool</title>
+    <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!--JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+
+    <!--Custom CSS -->
+      <link href="../static/css/base.css" type="text/css" rel="stylesheet" />
+
+      {% if title %}
+          <title>{{ title }}</title>
+      {% else %}
+          <title>No title specified</title>
+      {% endif %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="fa fa-bars"></span>
+      </button>
+      {% if user.is_authenticated %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto clearfix">
+              {% if current_user.student_email == 'admin@leeds.ac.uk' %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="display_dropdown_link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Display
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" id="display_module_link" href="/display_modules">Display Modules</a>
+                  <a class="dropdown-item" id="display_course_link" href="/display_courses">Display Courses</a>
+                  <a class="dropdown-item" id="display_lecturer_link" href="/display_lecturers">Display Lecturers</a>
+                </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="create_dropdown_link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Create
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" id="create_module_link" href="/create_module">Create Module</a>
+                  <a class="dropdown-item" id="create_course_link" href="/create_course">Create Course</a>
+                  <a class="dropdown-item" id="create_lecturer_link" href="/create_lecturer">Create Lecturer</a>
+                </div>
+              </li>
+              {% else %}
+              <li class="nav-item active">
+                <a class="nav-link" id="home_link" href="/home_page">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a href="/module_chooser" id="module_chooser_link" class="nav-link">Module Chooser</a>
+              </li>
+            {% endif %}
+              <li class="nav-item">
+                <a href="/change_password" id="change_password_link" class="nav-link">Change Password</a>
+              </li>
+              <li class="nav-item">
+                <a id="sign_out_link" href="/sign_out" class="nav-link">Sign Out</a>
+              </li>
+          {% else %}
+                <li class="nav-item">
+                  <a href="/sign_in" class="nav-link">Sign In</a>
+                </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <div>
+      {% block content %}{% endblock %}
+    </div>
+    <div class="copyright">
+    <div class="container">
+      <div class="col-offset-6 col-md-6">
+        <p>© 2018 -  All rights reserverd - Ivo O. Ganchev</p>
+      </div>
+    </div>
+  </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script type="text/javascript" src="../static/js/module_chooser.js"></script>
+  <script type="text/javascript" src="../static/js/dropdown.js"></script>
+</html>

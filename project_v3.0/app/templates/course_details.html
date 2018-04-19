@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}{{course.course_title}}{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+      <h1><b>{{course.course_title}}<b></h1><br>
+          <hr/>
+      <div class="jumbotron">
+          <p>
+              <b>Course Bachelor Degree:</b> {{ course.course_degree_bach }}
+          </p>
+          <p>
+              <b>Course Masters Degree:</b> {{ course.course_degree_mast }}
+          </p>
+          <p>
+              <b>Course 1y Credits:</b> {{ course.course_1y_credits }}
+          </p>
+          <p>
+              <b>Course 2y Credits:</b> {{ course.course_2y_credits }}
+          </p>
+          <p>
+              <b>Course 3y Credits:</b> {{ course.course_3y_credits }}
+          </p>
+          <p>
+              <b>Course 4y Credits:</b> {{ course.course_4y_credits }}
+          </p>
+        </div>
+
+        <div class="panel panel-default">
+
+          <ul class="list-group">
+              <li class="list-group-item">
+                  <div class="row toggle" class="dropdown-detail-1" data-toggle="detail-1">
+                      <div class="col-md-10">
+                          <b>Information</b>
+                      </div>
+                      <div class="col-md-2"><i class="fa fa-chevron-down float-right"></i></div>
+                  </div>
+                  <div id="detail-1">
+                      <hr></hr>
+                      <div class="container">
+                          <div class="fluid-row">
+                              <p>
+                                <h4><b>Compulsory modules assigned:</b></h4><br>
+                                {% if course.modules == "" %}
+                                    --None--
+                                {% else %}
+                                  {% for compul in course.modules %}
+                                    {{compul}} <a href="/remove_compul_from_course/{{course.id}}/{{compul.id}}"><span class="fas fa-trash-alt"></span></a><br>
+                                  {% endfor %}
+                                {% endif %}
+                              </p>
+                              <p>
+                                <h4><b>Optional modules assigned:</b></h4><br>
+                                {% if course.optional_modules == "" %}
+                                    --None--
+                                {% else %}
+                                  {% for optional in course.optional_modules %}
+                                    {{optional}} <a href="/remove_optional_from_course/{{course.id}}/{{optional.id}}"><span class="fas fa-trash-alt"></span></a><br>
+                                  {% endfor %}
+                                {% endif %}
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+              {% if user.student_email == 'admin@leeds.ac.uk' %}
+              <li class="list-group-item">
+                <div class="row toggle clearfix" class="dropdown-detail-2" data-toggle="detail-2">
+                    <div class="col-md-10">
+                        <b>Edit Course</b>
+                    </div>
+                    <div class="col-md-2"><i id="course{{course.id}}edit" class="fa fa-chevron-down float-right"></i></div>
+                </div>
+                <div id="detail-2">
+                    <hr></hr>
+                    <div class="container">
+                        <div class="fluid-row pull">
+                          <form class="form-inline"  action=" " method="POST">
+                                <p>
+
+                                </p>
+                                {% if user.student_email == 'admin@leeds.ac.uk' %}
+                                <b>Add compulsory modules:</b>
+                                <select id="select_compulsory_modules_menu" name="module_id" multiple>
+                                 {% for module in modules %}
+                                        {% if module.id in compulsory_modules_list %}
+                                            <option id="module{{module.id}}" value={{module.id}} selected>{{module.module_title}}</option>
+
+                                         {% else %}
+                                            <option id="module{{module.id}}" value={{module.id}} >{{module.module_title}}</option>
+
+                                        {% endif %}
+
+                                 {% endfor %}
+                               </select>
+                               {%endif%}
+                               <button id="save_compulsory_modules_button" class="button"  type="submit">Save</button>
+                          </form>
+                        </div>
+                          <form class="form-inline"  action=" " method="POST">
+                            <p>
+
+                            </p>
+                            {% if user.student_email == 'admin@leeds.ac.uk' %}
+                            <b>Add optional modules:</b>
+                            <select id="select_optional_modules_menu" name="module_op_id" multiple>
+                             {% for module in modules %}
+                                    {% if module.id in optional_modules_list %}
+                                        <option id="optmodule{{module.id}}" value={{module.id}} selected>{{module.module_title}}</option>
+
+                                     {% else %}
+                                        <option id="optmodule{{module.id}}" value={{module.id}} >{{module.module_title}}</option>
+
+                                    {% endif %}
+
+                             {% endfor %}
+                           </select>
+                           {%endif%}
+                           <button id="save_optional_modules_button" class="button"  type="submit">Save</button>
+                          </form>
+                    </div>
+                  </div>
+              </li>
+              {%endif%}
+            </ul>
+          </div>
+        </div>
+{% endblock %}
